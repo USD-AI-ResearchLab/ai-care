@@ -1,0 +1,2 @@
+model: "mlp"
+hidden_dim: 256

@@ -1,0 +1,2 @@
+dataset: "fashion-mnist"
+num_classes: 10

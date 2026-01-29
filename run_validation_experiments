@@ -1,0 +1,136 @@
+import os
+
+from utils.config import load_config
+from utils.logger import CSVLogger
+from utils.carbon_backend import get_carbon_backend
+
+from models.mlp import MLP
+from models.cnn import SimpleCNN
+from models.tiny_transformer import TinyTransformer
+from models.efficientnet import EfficientNetB0
+
+from train import train_model
+from evaluate import evaluate_model
+from data.vision_datasets import get_dataset
+
+from codecarbon import EmissionsTracker
+
+
+# --------------------------------------------------
+# Dynamic model builder
+# --------------------------------------------------
+def build_model(cfg, sample_input):
+
+    if cfg["model"] == "mlp":
+        return MLP(
+            input_dim=sample_input.numel(),
+            hidden_dim=cfg["hidden_dim"],
+            num_classes=cfg["num_classes"],
+        )
+
+    if cfg["model"] == "cnn":
+        return SimpleCNN(
+            in_channels=sample_input.shape[0],
+            channels=cfg["channels"],
+            num_classes=cfg["num_classes"],
+            dataset=cfg["dataset"],
+        )
+
+    if cfg["model"] == "transformer":
+        return TinyTransformer(
+            input_dim=sample_input.numel(),
+            d_model=cfg["d_model"],
+            n_heads=cfg["n_heads"],
+            layers=cfg["layers"],
+            num_classes=cfg["num_classes"],
+        )
+
+    if cfg["model"] == "efficientnet_b0":
+        return EfficientNetB0(num_classes=cfg["num_classes"])
+
+    raise ValueError(f"Unknown model: {cfg['model']}")
+
+
+# --------------------------------------------------
+# Main validation loop (CodeCarbon)
+# --------------------------------------------------
+def main():
+
+    logger = CSVLogger("results/codecarbon_results.csv")
+
+    models = ["mlp", "cnn", "transformer", "efficientnet_b0"]
+    datasets = ["mnist", "fashion_mnist", "cifar10", "cifar100"]
+
+    for dataset in datasets:
+        for model in models:
+
+            # ------------------------------------------
+            # Robust config loading
+            # ------------------------------------------
+            config_paths = [
+                "configs/base.yaml",
+                f"configs/{dataset}.yaml",
+            ]
+
+            model_cfg = f"configs/{model}.yaml"
+            if os.path.exists(model_cfg):
+                config_paths.append(model_cfg)
+            else:
+                print(f"[INFO] No config for {model}, using base + dataset config")
+
+            cfg = load_config(config_paths)
+
+            # 🔑 CRITICAL FIX
+            cfg["model"] = model
+
+            dataset_key = cfg["dataset"].lower().replace("-", "_")
+
+            # ------------------------------------------
+            # Skip incompatible combinations
+            # ------------------------------------------
+            if cfg["model"] == "efficientnet_b0" and dataset_key in {
+                "mnist", "fashion_mnist"
+            }:
+                print(f"[SKIP] {cfg['model']} not compatible with {cfg['dataset']}")
+                continue
+
+            train_set = get_dataset(cfg["dataset"], train=True)
+            test_set = get_dataset(cfg["dataset"], train=False)
+
+            sample_input, _ = train_set[0]
+            model_instance = build_model(cfg, sample_input)
+
+            tracker = EmissionsTracker(
+                project_name=f"EAPS-{cfg['dataset']}-{cfg['model']}",
+                output_dir="results",
+                log_level="error",
+            )
+
+            tracker.start()
+
+            model_instance, train_kwh = train_model(
+                model_instance, train_set, cfg
+            )
+
+            acc, infer_kwh = evaluate_model(
+                model_instance, test_set, cfg
+            )
+
+            codecarbon_emissions_kg = tracker.stop()
+
+            carbon_backend = get_carbon_backend(cfg)
+
+            logger.log({
+                "dataset": cfg["dataset"],
+                "model": cfg["model"],
+                "accuracy": acc,
+                "train_kwh": train_kwh,
+                "train_carbon": carbon_backend.compute_carbon(train_kwh, "train"),
+                "infer_kwh": infer_kwh,
+                "inference_carbon": carbon_backend.compute_carbon(infer_kwh, "infer"),
+                "codecarbon_emissions_kg": codecarbon_emissions_kg,
+            })
+
+
+if __name__ == "__main__":
+    main()

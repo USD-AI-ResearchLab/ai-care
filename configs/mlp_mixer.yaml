@@ -1,0 +1,7 @@
+model: mlp_mixer
+
+hidden_dim: 128
+depth: 4
+token_dim: 64
+channel_dim: 256
+patch_size: 4

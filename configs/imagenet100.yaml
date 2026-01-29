@@ -1,0 +1,12 @@
+# ImageNet-100 configuration
+
+dataset: imagenet100
+num_classes: 100
+
+# These will be overridden by base.yaml or model.yaml if needed
+batch_size: 64
+epochs: 1
+
+# ImageNet-specific input size (documentary only)
+image_size: 224
+train: false

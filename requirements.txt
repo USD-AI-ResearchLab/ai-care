@@ -1,0 +1,16 @@
+# Core ML
+torch
+torchvision
+
+# Data & plotting
+numpy
+pandas
+matplotlib
+scipy
+
+# Utilities
+pyyaml
+tqdm
+
+# Carbon measurement (external validation)
+codecarbon

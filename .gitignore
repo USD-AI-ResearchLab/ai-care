@@ -1,0 +1,86 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# =========================
+# Datasets (IMPORTANT)
+# =========================
+# -----------------------------
+# Datasets (DO NOT TRACK)
+# -----------------------------
+data/MNIST/
+data/FashionMNIST/
+data/cifar-10-batches-py/
+data/*.tar.gz
+data/*.zip
+
+# datasets
+data/**
+!data/*.py
+
+# archives
+*.tar.gz
+*.zip
+
+# artifacts
+*.pt
+*.pth
+
+# Datasets (never commit)
+data/*
+!data/*.py
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Results & plots
+results/
+
+
+# =========================
+# Results & plots (generated)
+# =========================
+results/
+plots/*
+!plots/*.py
+
+# =========================
+# Torch / ML artifacts
+# =========================
+*.pt
+*.pth
+*.ckpt
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# Dataset archives
+*.tar.gz
+*.zip
+
+# Torch / dataset caches
+**/__pycache__/
+**/*.pt
+**/*.pth
+
+# Logs and results
+results/
+

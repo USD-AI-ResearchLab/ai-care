@@ -1,0 +1,3 @@
+dataset,model,accuracy,train_kwh,train_carbon,infer_kwh,carbon,train_classes,val_classes
+imagenet100,mobilenetv2,0.0105263157894736,0.0,0.0,0.030453627058102,12.181450823240812,95,95
+imagenet100,mlp_mixer,0.0126315789473684,0.0,0.0,0.0549324253546006,21.972970141840246,95,95
