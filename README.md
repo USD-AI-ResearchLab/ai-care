@@ -1,41 +1,63 @@
-# EAPS / CARE-AI
-Energy-Aware Performance Scoring and Carbon-Aware Evaluation for Machine Learning
+# AI-CARE
+Carbon-Aware Reporting Evaluation Tool for AI Models
 
-This repository provides a reproducible benchmarking framework for evaluating machine learning models under joint accuracy, energy, and carbon constraints. It accompanies the paper:
+This repository provides the official implementation of **AI-CARE**, a
+reporting-centric evaluation tool for measuring and reporting predictive
+performance, energy consumption, and carbon emissions of machine learning
+models.
 
-The Energy Is All You Forget: Mandating Carbon Reporting and Carbon–Accuracy Tradeoff Metrics.
+The repository accompanies the paper:
 
-The framework elevates energy and carbon to first-class evaluation dimensions and enables standardized, deployment-relevant model comparison.
+**AI-CARE: Carbon-Aware Reporting Evaluation Metric for AI Models**
+
+AI-CARE elevates energy and carbon emissions to first-class evaluation
+quantities and enables transparent, reproducible comparison of models under
+fixed experimental conditions.
 
 ---
 
 ## Overview
 
-The pipeline trains representative models under identical conditions, measures empirical energy usage, converts it to carbon emissions using a fixed grid intensity, and evaluates models using CARE-AI efficiency metrics and Carbon–Accuracy Tradeoff Curves (CATC).
+AI-CARE evaluates machine learning models by executing training and inference
+under identical conditions, measuring empirical energy consumption, converting
+energy usage to carbon emissions using a fixed grid carbon intensity, and
+reporting accuracy–carbon tradeoffs through standardized metrics and
+visualizations.
 
-The goal is not to maximize accuracy, but to expose accuracy–carbon tradeoffs transparently and reproducibly.
+The framework does **not** modify model architectures, optimization algorithms,
+or training procedures. It reports empirically observed performance, energy, and
+carbon metrics during both training and inference.
 
 ---
 
 ## Models
 
-- MLP (lightweight baseline)
-- CNN (accuracy–efficiency tradeoff)
-- Tiny Transformer (compact transformer)
+The following representative model families are evaluated:
 
-All models use fixed hyperparameters across datasets.
+- Multilayer Perceptron (MLP)
+- Convolutional Neural Network (CNN)
+- Transformer-based classifier
+- MLP-Mixer
+- MobileNetV2
+- ResNet-18 (ImageNet-100 only)
+
+Model hyperparameters are held fixed across datasets to isolate architectural
+and dataset effects.
 
 ---
 
 ## Datasets
 
+Experiments are conducted on five vision benchmarks of increasing complexity:
+
 - MNIST
 - Fashion-MNIST
 - CIFAR-10
 - CIFAR-100
-- ImageNet-100 (stress test)
+- ImageNet-100
 
-Dataset properties are inferred dynamically.
+Dataset properties (input resolution, number of channels, number of classes)
+are inferred automatically by the evaluation pipeline.
 
 ---
 
@@ -44,19 +66,29 @@ Dataset properties are inferred dynamically.
 - Optimizer: Adam
 - Learning rate: 1e-3
 - Batch size: 64
-- Epochs: 3
+- Training epochs: 10
 - Hardware: CPU-only
-- Carbon intensity: 400 gCO2/kWh
+- Grid carbon intensity: 400 gCO₂/kWh
+
+A fixed number of epochs is used to emphasize relative accuracy–energy–carbon
+tradeoffs rather than absolute peak accuracy.
 
 ---
 
-## Metrics
+## Reported Metrics
 
-- Accuracy
-- Training energy and carbon
-- Inference energy and carbon
-- CARE-AI efficiency score
-- Pareto-optimality via CATC
+AI-CARE reports the following quantities:
+
+- Task performance (accuracy)
+- Training energy consumption and carbon emissions
+- Inference energy consumption and carbon emissions
+- Total carbon emissions (training + inference)
+- Carbon–Accuracy Tradeoff Curves (CATC)
+- Scalar Carbon-Aware Score (SCAS)
+
+The scalar score integrates normalized task performance and total carbon
+emissions to support comparative ranking when a single decision criterion is
+required.
 
 ---
 
@@ -68,19 +100,21 @@ python run_benchmark_experiments.py
 python analyze_results.py
 ```
 
-Docker execution is also supported.
-
 ---
 
 ## Outputs
 
-Results are logged to CSV files, with plots and Pareto tables generated post hoc.
+The evaluation pipeline produces CSV files containing reported performance,
+energy, and carbon metrics, along with publication-quality visualizations of
+carbon–accuracy tradeoffs and per-dataset scalar carbon-aware scores.
 
 ---
 
 ## Reproducibility
 
-CPU-only, fixed configs, deterministic logging, and external carbon validation support ensure artifact reproducibility.
+All experiments are executed under fixed hardware and software conditions with
+deterministic configurations and a fixed grid carbon intensity to ensure
+reproducible and comparable results across models and datasets.
 
 ---
 
