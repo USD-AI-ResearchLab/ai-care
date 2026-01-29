@@ -81,7 +81,7 @@ def pareto_front(df, x_col="inference_carbon", y_col="accuracy"):
 # Model families (canonical)
 # --------------------------------------------------
 MODEL_FAMILIES = {
-    "CNN": {"cnn", "resnet18", "mobilenetv2", "efficientnet_b0"},
+    "CNN": {"cnn", "resnet18", "mobilenetv2"},
     "Transformer": {"transformer"},
     "Mixer": {"mlp_mixer"},
 }
