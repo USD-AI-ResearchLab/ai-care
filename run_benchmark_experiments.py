@@ -8,7 +8,6 @@ from models.tiny_transformer import TinyTransformer
 from models.mlp_mixer import MLPMixer
 from models.resnet import ResNet18
 from models.mobilenet import MobileNetV2
-from models.efficientnet import EfficientNetB0
 
 from train import train_model
 from evaluate import evaluate_model
@@ -20,19 +19,19 @@ from data.vision_datasets import get_dataset, load_imagenet100
 # --------------------------------------------------
 ALLOWED_MODELS = {
     "MNIST": {
-        "mlp", "cnn", "transformer", "mlp_mixer", "efficientnet_b0"
+        "mlp", "cnn", "transformer", "mlp_mixer"
     },
     "FASHIONMNIST": {
-        "mlp", "cnn", "transformer", "mlp_mixer", "efficientnet_b0"
+        "mlp", "cnn", "transformer", "mlp_mixer"
     },
     "CIFAR10": {
-        "mlp", "cnn", "transformer", "mlp_mixer", "efficientnet_b0"
+        "mlp", "cnn", "transformer", "mlp_mixer"
     },
     "CIFAR100": {
-        "mlp", "cnn", "transformer", "mlp_mixer", "efficientnet_b0"
+        "mlp", "cnn", "transformer", "mlp_mixer"
     },
     "IMAGENET100": {
-        "resnet18", "mobilenetv2", "mlp_mixer", "efficientnet_b0"
+        "resnet18", "mobilenetv2", "mlp_mixer"
     },
 }
 
@@ -47,15 +46,7 @@ def auto_cap_epochs(cfg, dataset_key, model_name):
     """
     base_epochs = cfg.get("epochs", 10)
 
-    if model_name == "efficientnet_b0":
-        if dataset_key in ["MNIST", "FASHIONMNIST"]:
-            return min(base_epochs, 5)
-        elif dataset_key in ["CIFAR10", "CIFAR100"]:
-            return min(base_epochs, 10)
-        elif dataset_key == "IMAGENET100":
-            return min(base_epochs, 20)
 
-    return base_epochs
 
 
 # --------------------------------------------------
@@ -130,10 +121,6 @@ def build_model(cfg):
     elif model_name == "mobilenetv2":
         return MobileNetV2(num_classes=cfg["num_classes"])
 
-    # ---------------- EfficientNet-B0 ----------------
-    elif model_name == "efficientnet_b0":
-        return EfficientNetB0(num_classes=cfg["num_classes"])
-
     else:
         raise ValueError(f"Unknown model: {model_name}")
 
@@ -158,7 +145,6 @@ def main():
         "cnn",
         "transformer",
         "mlp_mixer",
-        "efficientnet_b0",
         "resnet18",
         "mobilenetv2",
     ]
@@ -175,8 +161,6 @@ def main():
 
                 dataset_key = cfg["dataset"].upper().replace("-", "").replace("_", "")
 
-                # ---- Auto-cap epochs (fair carbon) ----
-                cfg["epochs"] = auto_cap_epochs(cfg, dataset_key, cfg["model"])
 
                 # ---------------- Dataset loading ----------------
                 if dataset_key == "IMAGENET100":

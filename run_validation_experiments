@@ -7,7 +7,6 @@ from utils.carbon_backend import get_carbon_backend
 from models.mlp import MLP
 from models.cnn import SimpleCNN
 from models.tiny_transformer import TinyTransformer
-from models.efficientnet import EfficientNetB0
 
 from train import train_model
 from evaluate import evaluate_model
@@ -44,10 +43,6 @@ def build_model(cfg, sample_input):
             layers=cfg["layers"],
             num_classes=cfg["num_classes"],
         )
-
-    if cfg["model"] == "efficientnet_b0":
-        return EfficientNetB0(num_classes=cfg["num_classes"])
-
     raise ValueError(f"Unknown model: {cfg['model']}")
 
 
@@ -58,7 +53,7 @@ def main():
 
     logger = CSVLogger("results/codecarbon_results.csv")
 
-    models = ["mlp", "cnn", "transformer", "efficientnet_b0"]
+    models = ["mlp", "cnn", "transformer"]
     datasets = ["mnist", "fashion_mnist", "cifar10", "cifar100"]
 
     for dataset in datasets:
@@ -85,14 +80,6 @@ def main():
 
             dataset_key = cfg["dataset"].lower().replace("-", "_")
 
-            # ------------------------------------------
-            # Skip incompatible combinations
-            # ------------------------------------------
-            if cfg["model"] == "efficientnet_b0" and dataset_key in {
-                "mnist", "fashion_mnist"
-            }:
-                print(f"[SKIP] {cfg['model']} not compatible with {cfg['dataset']}")
-                continue
 
             train_set = get_dataset(cfg["dataset"], train=True)
             test_set = get_dataset(cfg["dataset"], train=False)
