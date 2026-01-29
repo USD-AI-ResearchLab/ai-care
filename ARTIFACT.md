@@ -1,82 +1,142 @@
-# ARTIFACT.md — EAPS Evaluation Framework
+# AI-CARE Artifact Description
 
-This document describes the **research artifact** accompanying the paper:
+This document describes the software artifact accompanying the paper:
 
-**The Energy Is All You Forget: Toward Standardized Energy-Aware Evaluation in Machine Learning**
+**AI-CARE: Carbon-Aware Reporting Evaluation Metric for AI Models**
 
-The artifact implements a reproducible benchmarking framework for evaluating machine learning models under joint **accuracy, energy, and carbon** constraints.
-
----
-
-## Artifact Contents
-
-The artifact consists of:
-
-- Source code for training and evaluating ML models
-- Energy and carbon measurement utilities
-- Scripts for computing Energy-Aware Performance Scores (EAPS)
-- Scripts for generating Carbon–Accuracy Tradeoff Curves (CATC)
-- Configuration files for reproducible experiments
-- Logged results and generated plots
+The purpose of this artifact is to enable transparent and reproducible
+reproduction of the experiments, metrics, tables, and figures reported
+in the paper. The artifact is strictly scoped to the reported work and
+does not include extensions beyond the paper.
 
 ---
 
-## Claims Supported by the Artifact
+## Artifact Purpose
 
-The artifact supports the following claims made in the paper:
+AI-CARE is a **reporting-centric evaluation artifact** for machine learning
+models. It measures and reports:
 
-1. Accuracy-only evaluation can favor models with substantially higher carbon cost.
-2. Energy and carbon metrics reveal meaningful tradeoffs between model performance and environmental impact.
-3. EAPS provides a practical scalar score that alters model rankings compared to accuracy alone.
-4. Carbon–Accuracy Tradeoff Curves expose empirical Pareto frontiers across datasets and architectures.
-5. Relative carbon rankings are robust across measurement backends.
+- Task performance (accuracy)
+- Training energy consumption and derived carbon emissions
+- Inference energy consumption and derived carbon emissions
+- Carbon–Accuracy Tradeoff Curves (CATC)
+- Scalar Carbon-Aware Scores (SCAS)
+- Pareto-optimal model sets
 
----
-
-## How to Use the Artifact
-
-### Minimum Requirements
-- Python 3.9+
-- OR Docker (recommended for full reproducibility)
-- CPU-only hardware is sufficient
-
-### Basic Usage
-1. Install dependencies or build the Docker image
-2. Run benchmark experiments
-3. Generate CATC plots and EAPS scores
-4. Inspect CSV results and figures
-
-Refer to `README.md` for detailed, step-by-step instructions.
+The artifact does **not** perform training-time optimization, resource
+control, scheduling, or adaptive configuration. All measurements are
+reported under fixed experimental conditions.
 
 ---
 
-## Expected Outputs
+## Reproducibility Scope
 
-After successful execution, the artifact produces:
+Running the artifact reproduces:
 
-- `results/results.csv` — logged accuracy, energy, carbon, and EAPS metrics
-- `plots/*.png` — Carbon–Accuracy Tradeoff Curves (dataset-wise and aggregated)
+- Global and per-dataset Carbon–Accuracy Tradeoff Curves (Fig. 2)
+- Per-dataset scalar carbon-aware score plots (Fig. 3)
+- Pareto tables reported in the appendix
+- CSV logs containing performance, energy, and carbon metrics
 
----
-
-## Reproducibility Notes
-
-- All experiments use fixed hyperparameters and controlled execution.
-- No hyperparameter tuning or architecture search is performed.
-- Energy-to-carbon conversion uses a fixed grid intensity (400 gCO₂/kWh).
-- Results are deterministic under fixed seeds and hardware.
+The default execution produces **only** the results described in the paper.
 
 ---
 
-## Ethical and Environmental Considerations
+## Datasets
 
-This artifact explicitly measures and reports the environmental cost of machine learning models.
-It is intended to promote transparency, responsible benchmarking, and sustainable AI research practices.
+The following datasets are evaluated:
+
+- MNIST
+- Fashion-MNIST
+- CIFAR-10
+- CIFAR-100
+- ImageNet-100
+
+Dataset-specific properties (input resolution, number of channels, number
+of classes) are inferred automatically by the evaluation pipeline.
 
 ---
 
-## Anonymity
+## Models
 
-This artifact is suitable for **double-blind review**.
-All identifying information has been removed.
-A de-anonymized version will be released upon acceptance.
+The artifact evaluates representative model families consistent with the paper:
+
+- Multilayer Perceptron (MLP)
+- Convolutional Neural Network (CNN)
+- Transformer-based classifier
+- MLP-Mixer
+- MobileNetV2
+- ResNet-18 (ImageNet-100 only)
+
+All models are trained using identical optimization settings and a fixed
+number of epochs to emphasize relative accuracy–energy–carbon tradeoffs.
+
+---
+
+## Experimental Setup
+
+- Optimizer: Adam
+- Learning rate: 1e-3
+- Batch size: 64
+- Training epochs: 10
+- Hardware: CPU-only
+- Grid carbon intensity: 400 gCO₂/kWh
+
+A fixed carbon intensity is used to ensure comparable and reproducible
+carbon reporting across datasets and models.
+
+---
+
+## Software Requirements
+
+- Python 3.9 or later
+- CPU-only environment
+- Operating systems: Linux, macOS, or Windows
+
+Install dependencies using:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## How to Run the Artifact
+
+Execute the full evaluation pipeline:
+
+```bash
+python run_benchmark_experiments.py
+python analyze_results.py
+```
+
+These commands generate all figures, tables, and CSV outputs reported
+in the paper.
+
+---
+
+## Output Structure
+
+- `results/`  
+  CSV files containing performance, energy, and carbon metrics
+
+- `plots/`  
+  Carbon–Accuracy Tradeoff Curves and scalar carbon-aware score plots
+
+- `tables/`  
+  Pareto-optimal model tables
+
+---
+
+## Notes for Reviewers
+
+- The artifact is intentionally minimal and paper-aligned.
+- Optional validation utilities are present in the repository but are
+  disabled by default and are not part of the reported results.
+- No Docker environment or specialized hardware is required.
+
+---
+
+## License
+
+This artifact is released for research and educational use only.
