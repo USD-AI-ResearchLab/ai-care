@@ -44,20 +44,25 @@ def main():
         out_dir="tables/pareto",
     )
 
-    # ---------------- Carbon consistency validation ----------------
-    plot_carbon_consistency_per_dataset(
-        eaps_csv=RESULTS_CSV,
-        codecarbon_csv=CODECARBON_CSV,
-        out_dir="figures/codecarbon_validation",
-    )
+    # ---------------- Carbon consistency validation (optional) ----------------
+    # NOTE:
+    # These plots are provided for internal validation and are NOT part of the
+    # core AI-CARE results reported in the paper. They are disabled by default
+    # to keep the artifact strictly paper-aligned.
 
-    plot_carbon_consistency_eaps_vs_codecarbon(
-        eaps_csv=RESULTS_CSV,
-        codecarbon_csv=CODECARBON_CSV,
-        out_dir="figures",
-    )
+    # plot_carbon_consistency_per_dataset(
+    #     eaps_csv=RESULTS_CSV,
+    #     codecarbon_csv=CODECARBON_CSV,
+    #     out_dir="figures/codecarbon_validation",
+    # )
 
-    print("✅ All CATC, Pareto, CARE-AI, and validation plots generated.")
+    # plot_carbon_consistency_eaps_vs_codecarbon(
+    #     eaps_csv=RESULTS_CSV,
+    #     codecarbon_csv=CODECARBON_CSV,
+    #     out_dir="figures",
+    # )
+
+    print("✅ CATC, Pareto, and CARE-AI plots generated.")
 
 
 if __name__ == "__main__":
