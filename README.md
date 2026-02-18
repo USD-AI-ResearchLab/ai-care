@@ -120,4 +120,5 @@ reproducible and comparable results across models and datasets.
 
 ## License
 
-Research and educational use only.
+This project is licensed under the MIT License – see the LICENSE file for details.
+
