@@ -120,5 +120,11 @@ reproducible and comparable results across models and datasets.
 
 ## License
 
-This project is licensed under the MIT License – see the LICENSE file for details.
+This project is licensed under the Apache License 2.0 – see the LICENSE file for details.
+
+## Patent Notice
+
+This project may be subject to patent protection. 
+Certain components described in the associated publication are pending patent review.
+
 
