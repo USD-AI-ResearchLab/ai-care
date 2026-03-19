@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: "AI-CARE: Carbon-Aware Reporting Evaluation Metric for AI Models"
+authors:
+  - family-names: Santosh
+    given-names: KC
+  - family-names: Baride
+    given-names: Srikanth
+  - family-names: Rizk
+    given-names: Rodrigue
+year: 2026
+doi: 10.48550/arXiv.2602.16042
+url: https://arxiv.org/abs/2602.16042
