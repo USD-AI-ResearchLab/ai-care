@@ -1,3 +1,4 @@
+[![arXiv](https://img.shields.io/badge/arXiv-2602.16042-b31b1b.svg)](https://arxiv.org/abs/2602.16042)
 # AI-CARE
 Carbon-Aware Reporting Evaluation Tool for AI Models
 
@@ -131,16 +132,19 @@ Certain components described in the associated publication are pending patent re
 
 ---
 
+---
+
 ## Citation
 
 If you use this work, please cite:
 
 ```bibtex
-@article{aicare2026,
-  title={AI-CARE: Carbon-Aware Reporting Evaluation Metric for AI Models},
-  author={Baride, Srikanth and others},
-  journal={arXiv preprint arXiv:2602.16042},
-  year={2026}
+@misc{santosh2026aicarecarbonawarereportingevaluation,
+  title={AI-CARE: Carbon-Aware Reporting Evaluation Metric for AI Models}, 
+  author={KC Santosh and Srikanth Baride and Rodrigue Rizk},
+  year={2026},
+  eprint={2602.16042},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2602.16042}, 
 }
-
-
