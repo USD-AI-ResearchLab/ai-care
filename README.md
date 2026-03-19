@@ -8,7 +8,9 @@ models.
 
 The repository accompanies the paper:
 
-**AI-CARE: Carbon-Aware Reporting Evaluation Metric for AI Models**
+📄 **AI-CARE: Carbon-Aware Reporting Evaluation Metric for AI Models**  
+🔗 https://arxiv.org/abs/2602.16042  
+📥 https://arxiv.org/pdf/2602.16042
 
 AI-CARE elevates energy and carbon emissions to first-class evaluation
 quantities and enables transparent, reproducible comparison of models under
@@ -126,5 +128,19 @@ This project is licensed under the Apache License 2.0 – see the LICENSE file f
 
 This project may be subject to patent protection. 
 Certain components described in the associated publication are pending patent review.
+
+---
+
+## Citation
+
+If you use this work, please cite:
+
+```bibtex
+@article{aicare2026,
+  title={AI-CARE: Carbon-Aware Reporting Evaluation Metric for AI Models},
+  author={Baride, Srikanth and others},
+  journal={arXiv preprint arXiv:2602.16042},
+  year={2026}
+}
 
 
