@@ -43,6 +43,11 @@ __pycache__/
 
 # Results & plots
 results/
+!results/
+results/*
+!results/llm/
+results/llm/*
+!results/llm/.gitkeep
 
 
 # =========================
@@ -83,4 +88,8 @@ Thumbs.db
 
 # Logs and results
 results/
-
+!results/
+results/*
+!results/llm/
+results/llm/*
+!results/llm/.gitkeep
